@@ -15,6 +15,7 @@ Contents:
    parser.rst
    extractorbase.rst
    imageextractor.rst
+   tableextractor.rst
 
 Indices and tables
 ==================
@@ -37,6 +38,8 @@ The *[pds.core.reader]* module is the lowest level software stack. It generates 
 The *pds.core.parser* module consumes these tuples and adds information the parse tree. It is within this module that type conversion should performed, as well as any other transformation on the labels.
 
 The *pds.imageextractor* module provides a convenient way to extract images from PDS data products. Use of this module keeps the parsing details and knowledge of the PDS specification under the hood.
+
+The *pds.tableextractor* module extracts data from PDS products containing tabular data.  At the moment the module supports ASCII (FIXED_LENGTH) tables.
 
 References & Footnotes
 ======================
