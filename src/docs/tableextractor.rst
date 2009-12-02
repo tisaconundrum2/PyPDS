@@ -1,12 +1,7 @@
 The tableextractor module
 =========================
 
-This module extracts data from a PDS table.  At the moment it supports:
-
-* FIXED_LENGTH  
-
-.. note::
-    ASCII_FILE.
+This module extracts data from a PDS table.  At the moment it only supports ASCII tables.  In future also BINARY tables will be read as well.
 
 This is an example on how to use the code:
 
