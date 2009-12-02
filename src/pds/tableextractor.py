@@ -8,7 +8,6 @@ Created by Alessandro Frigeri on 2009-12-2.
 Copyright (c) 2009 Ryan Matthew Balfanz & Alessandro Frigeri. All rights reserved.
 """
 
-
 import logging
 import os
 import sys
@@ -104,16 +103,9 @@ class ColumnParser(Parser):
 class TableExtractor(ExtractorBase):
 	"""Extract a PDS table.
 	
-	Returned images are instances of the Python Imaging Library Image class.
-	As such, this module depends on PIL.
-	
-	An attached image may be extracted from by 
-	determining its location within the file and identifying its size.
-	Not all PDS images are supported at this time.
-	
-	Currently this module only supports FIXED_LENGTH as the RECORD_TYPE,
-	8 as the SAMPLE_BITS and either UNSIGNED_INTEGER or MSB_UNSIGNED_INTEGER as the SAMPLE_TYPE.
-	Attempts to extract an image that is not supported will result in None being returned.
+	Return a PDS table read by csv reader from python.
+	        
+	Currently this module only supports ASCII tables.	
 	
 	Simple Example Usage:
 	
@@ -186,7 +178,7 @@ class TableExtractor(ExtractorBase):
                         for l in slabels:
                            columns.append(l['COLUMN']['NAME'].strip().replace("\"",""))                     
                         if self.log: self.log.debug("Found %d columns" % (len(columns)))
-                        if self.labels['RECORD_TYPE'] == "FIXED_LENGTH":      
+                        if self.labels['TABLE']['INTERCHANGE_FORMAT'] == 'ASCII':      
                            locationfile = getPdsFileName(location,pdsdatadir)                                             
                            tbl = csv.DictReader(open(locationfile), fieldnames=columns, delimiter=' ')                                                     
 			
@@ -199,20 +191,19 @@ class TableExtractor(ExtractorBase):
 			
 	def _check_table_is_supported(self):
 		"""Check that the image is supported."""
-		SUPPORTED = {}
-		SUPPORTED['RECORD_TYPE'] = 'FIXED_LENGTH',
-		#SUPPORTED['SAMPLE_BITS'] = 8,
+		SUPPORTED = {}		
+		SUPPORTED['INTERCHANGE_FORMAT'] = 'ASCII'
 		#SUPPORTED['SAMPLE_TYPE'] = 'UNSIGNED_INTEGER', 'MSB_UNSIGNED_INTEGER'
 				
 		if not self.labels.has_key('TABLE'):
 			if self.log: self.log.warn("No table data found")
 			return False
 			
-		recordType = self.labels['RECORD_TYPE']
-		
-		if recordType not in SUPPORTED['RECORD_TYPE']:
-			errorMessage = ("RECORD_TYPE '%s' is not supported") % (recordType)
-			#raise NotImplementedError(errorMessage)
+		interchangeFormat = self.labels['TABLE']['INTERCHANGE_FORMAT']
+
+		if interchangeFormat not in SUPPORTED['INTERCHANGE_FORMAT']:
+			errorMessage = ("INTERCHANGE_FORMAT '%s' is not supported yet") % (interchangeFormat)
+			raise NotImplementedError(errorMessage)
 			return False
 			
 		return True
