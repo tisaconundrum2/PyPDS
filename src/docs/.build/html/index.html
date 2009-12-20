@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to PyPDS’s documentation! &mdash; PyPDS v0.1 documentation</title>
+    <link rel="stylesheet" href="_static/adctheme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyPDS v0.1 documentation" href="" />
+    <link rel="next" title="The common module" href="common.html" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<p>PyPDS v0.1 documentation</p>
+</div>
+<div id="header">
+	<div id="title"><h1>Welcome to PyPDS’s documentation!</h1></div>
+	<ul id="headerButtons">
+		<li id="toc_button"><div class="headerButton"><a href="#">Table of Contents</a></div></li>
+		<li id="page_buttons">
+			<div class="headerButton"><a href="genindex.html" title="General Index" accesskey="I">index</a></div>
+			<div class="headerButton"><a href="modindex.html" title="Global Module Index" accesskey="M">modules</a></div>
+			<div class="headerButton"><a href="common.html" title="The common module" accesskey="N">next</a></div>
+		</li>
+	</ul>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="">Main Page</a></li></ul>
+	<ul>
+<li class="toctree-l1"><a class="reference external" href="common.html">The common module</a></li>
+<li class="toctree-l1"><a class="reference external" href="reader.html">The reader module</a></li>
+<li class="toctree-l1"><a class="reference external" href="parser.html">The parser module</a></li>
+<li class="toctree-l1"><a class="reference external" href="extractorbase.html">The extractorbase module</a></li>
+<li class="toctree-l1"><a class="reference external" href="imageextractor.html">The imageextractor module</a></li>
+</ul>
+
+      <h3>This Page</h3>
+      <ul class="this-page-menu">
+        <li><a href="_sources/index.txt"
+               rel="nofollow">Show Source</a></li>
+      </ul>
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms or a module, class or function name.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="welcome-to-pypds-s-documentation">
+<h1>Welcome to PyPDS&#8217;s documentation!<a class="headerlink" href="#welcome-to-pypds-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="common.html">The common module</a></li>
+<li class="toctree-l1"><a class="reference external" href="reader.html">The reader module</a></li>
+<li class="toctree-l1"><a class="reference external" href="parser.html">The parser module</a></li>
+<li class="toctree-l1"><a class="reference external" href="extractorbase.html">The extractorbase module</a></li>
+<li class="toctree-l1"><a class="reference external" href="imageextractor.html">The imageextractor module</a></li>
+</ul>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference external" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference external" href="modindex.html"><em>Module Index</em></a></li>
+<li><a class="reference external" href="search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
+<div class="section" id="about-the-project">
+<h1>About the Project<a class="headerlink" href="#about-the-project" title="Permalink to this headline">¶</a></h1>
+<p>From the Planetary Data System&#8217;s <a class="reference external" href="http://pds.jpl.nasa.gov/documents/qs/labels.html">Quick-Start Introduction to PDS Archiving</a></p>
+<blockquote>
+PDS labels are written in the Object Description Language (ODL), as are all PDS catalog files. ODL consists of a series of lines of the form &#8220;keyword = value&#8221;, with certain keywords (for example,OBJECT) being used to delimit structures within the label. PDS prefers to use non-cryptic keywords, so that the data labels are more easily interpreted by users browsing through them.</blockquote>
+<p>This library provides a python interface to PDS files. It parses a data product&#8217;s attached labels into a parse tree of dictionaries which maintain structure. It also provides convenient methods to extract image data from a data product with attached labels.</p>
+<p>The <em>[pds.core.reader]</em> module is the lowest level software stack. It generates a tuple for all (keyword, value) pairs. This module preforms some preprocessing on the data by stripping blank lines and comments.</p>
+<p>The <em>pds.core.parser</em> module consumes these tuples and adds information the parse tree. It is within this module that type conversion should performed, as well as any other transformation on the labels.</p>
+<p>The <em>pds.imageextractor</em> module provides a convenient way to extract images from PDS data products. Use of this module keeps the parsing details and knowledge of the PDS specification under the hood.</p>
+</div>
+<div class="section" id="references-footnotes">
+<h1>References &amp; Footnotes<a class="headerlink" href="#references-footnotes" title="Permalink to this headline">¶</a></h1>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+    <div class="footer">
+    <p>
+      &copy; Copyright 2009, Ryan Balfanz.
+      Last updated on Dec 20, 2009.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.3.
+	</p>
+    </div>
+      <div class="clearer"></div>
+    </div>
+	<div id="breadcrumbs">
+		Welcome to PyPDS&#8217;s documentation!
+		</ul>
+	</div>
+	<script type="text/javascript" charset="utf-8" src="_static/toc.js"></script>
+  </body>
+</html>
