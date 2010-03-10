@@ -9,6 +9,7 @@ Copyright (c) 2009 Ryan Matthew Balfanz. All rights reserved.
 """
 
 
+import hashlib
 import logging
 import os
 import sys
@@ -26,6 +27,12 @@ class ImageExtractorError(ExtractorError):
 
 	def __init__(self, *args, **kwargs):
 		super(ExtractorError, self).__init__(*args, **kwargs)
+		
+		
+class ImageNotSupportedError(object):
+	"""docstring for ImageNotSupportedError"""
+	def __init__(self):
+		super(ImageNotSupportedError, self).__init__()
 		
 		
 class ChecksumError(ImageExtractorError):
@@ -61,12 +68,22 @@ class ImageExtractor(ExtractorBase):
 	>>> 	print "The image was not supported."
 	"""
 	
-	def __init__(self, log=None):
+	def __init__(self, log=None, raisesChecksumError=True, raisesImageNotSupportedError=True):
 		super(ImageExtractor, self).__init__()
 		
 		self.log = log
+		self.raisesChecksumError = raisesChecksumError
+		self.raisesImageNotSupportedError = raisesImageNotSupportedError
 		if log:
-			self._init_logging()	
+			self._init_logging()
+		# self.fh = None
+		# self.imageDimensions = None
+		
+		# self.PILSettings = {}
+		# self.PILSettings["mode"] = "L"
+		# self.PILSettings["decoder"] = "raw"
+		
+		# self.verifySecureHash = True
 
 	def _init_logging(self):
 		"""Initialize logging."""
@@ -105,6 +122,7 @@ class ImageExtractor(ExtractorBase):
 			if self.log: self.log.debug("Image in '%s' is supported" % (source))
 			dim = self._get_image_dimensions()
 			loc = self._get_image_location()
+			md5Checksum = self._get_image_checksum()
 			if self.log: self.log.debug("Image dimensions should be %s" % (str(dim)))
 			if self.log: self.log.debug("Seeking to image data at %d" % (loc))
 			f.seek(loc)
@@ -113,15 +131,26 @@ class ImageExtractor(ExtractorBase):
 			# rawImageData = f.readline()
 			# f.seek(-int(self.labels["RECORD_BYTES"]), os.SEEK_CUR)
 			rawImageData = f.read(readSize)
+			if md5Checksum:
+				rawImageChecksum = hashlib.md5(rawImageData).hexdigest()
+				checksumVerificationPassed = rawImageChecksum == md5Checksum and True or False
+				if not checksumVerificationPassed:
+					if self.log: self.log.debug("Secure hash verification failed")
+					if self.raisesChecksumError:
+						errorMessage = "Verification failed! Expected '%s' but got '%s'." % (md5Checksum, rawImageChecksum)
+						raise ChecksumError, errorMessage
+				else:
+					if self.log: self.log.debug("Secure hash verification passed")
 			if self.log: self.log.debug("Read successful (len: %d), creating Image object" % (len(rawImageData)))
 			# The frombuffer defaults may change in a future release;
 			# for portability, change the call to read:
 			# frombuffer(mode, size, data, 'raw', mode, 0, 1).
 			img = Image.frombuffer('L', dim, rawImageData, 'raw', 'L', 0, 1)
-			if self.log: self.log.debug("Image result: %s" % (str(img)))
-			if self.log: self.log.debug("Image info: %s" % (str(img.info)))
-			if self.log: self.log.debug("Image mode: %s" % (str(img.mode)))
-			if self.log: self.log.debug("Image size: %s" % (str(img.size)))
+			if self.log:
+				self.log.debug("Image result: %s" % (str(img)))
+				self.log.debug("Image info: %s" % (str(img.info)))
+				self.log.debug("Image mode: %s" % (str(img.mode)))
+				self.log.debug("Image size: %s" % (str(img.size)))
 		else:
 			if self.log: self.log.error("Image is not supported '%s'" % (source))
 			img = None
@@ -135,10 +164,12 @@ class ImageExtractor(ExtractorBase):
 		SUPPORTED['RECORD_TYPE'] = 'FIXED_LENGTH',
 		SUPPORTED['SAMPLE_BITS'] = 8,
 		SUPPORTED['SAMPLE_TYPE'] = 'UNSIGNED_INTEGER', 'MSB_UNSIGNED_INTEGER', 'LSB_INTEGER'
+		
+		imageIsSupported = True
 				
 		if not self.labels.has_key('IMAGE'):
 			if self.log: self.log.warn("No image data found")
-			return False
+			imageIsSupported = False
 			
 		recordType = self.labels['RECORD_TYPE']
 		imageSampleBits = int(self.labels['IMAGE']['SAMPLE_BITS'])
@@ -146,18 +177,21 @@ class ImageExtractor(ExtractorBase):
 
 		if recordType not in SUPPORTED['RECORD_TYPE']:
 			errorMessage = ("RECORD_TYPE '%s' is not supported") % (recordType)
-			# raise NotImplementedError(errorMessage)
-			return False
+			if self.raisesImageNotSupportedError:
+				raise ImageNotSupportedError(errorMessage)
+			imageIsSupported = False
 		if imageSampleBits not in SUPPORTED['SAMPLE_BITS']:
 			errorMessage = ("SAMPLE_BITS '%s' is not supported") % (imageSampleBits)
-			# raise NotImplementedError(errorMessage)
-			return False
+			if self.raisesImageNotSupportedError:
+				raise ImageNotSupportedError(errorMessage)
+			imageIsSupported = False
 		if imageSampleType not in SUPPORTED['SAMPLE_TYPE']:
 			errorMessage = ("SAMPLE_TYPE '%s' is not supported") % (imageSampleType)
-			# raise NotImplementedError(errorMessage)
-			return False
+			if self.raisesImageNotSupportedError:
+				raise ImageNotSupportedError(errorMessage)
+			imageIsSupported = False
 			
-		return True
+		return imageIsSupported
 			
 	def _get_image_dimensions(self):
 		"""Return the dimensions of the image as (width, height).
@@ -179,6 +213,8 @@ class ImageExtractor(ExtractorBase):
 		
 		If the units are given along with the value, they must be <BYTES>.
 		The image location is given by the value.
+		
+		This may raise a ValueError.
 		"""
 		imagePointer = self.labels['^IMAGE'].split()
 		if len(imagePointer) == 1:
@@ -195,6 +231,28 @@ class ImageExtractor(ExtractorBase):
 			errorMessage = ("^IMAGE contains extra information") % (imageSampleType)
 			raise ValueError(errorMessage)
 		return imageLocation
+		
+	def _get_image_checksum(self):
+		"""Return the md5 checksum of the image.
+		
+		The checksum is retrieved from self.labels['IMAGE']['MD5_CHECKSUM'].
+		This may raise a KeyError.
+		"""
+		ignoreKeyError = True
+		
+		md5Checksum = None
+		try:
+			md5Checksum = self.labels['IMAGE']["MD5_CHECKSUM"]
+		except KeyError:
+			if self.log: self.log.debug("Did not find md5 checksum")
+			if not ignoreKeyError:
+				raise
+			pass
+		else:
+			if self.log: self.log.debug("Found md5 checksum")
+			md5Checksum = md5Checksum[1:-1]
+			
+		return md5Checksum
 		
 		
 class ImageExtractorTests(unittest.TestCase):

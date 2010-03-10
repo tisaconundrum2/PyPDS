@@ -27,8 +27,14 @@ class ParserError(Exception):
 
 	def __init__(self, *args, **kwargs):
 		super(ParserError, self).__init__(*args, **kwargs)
-
-
+		
+		
+class DuplicateKeyError(ParserError):
+	"""docstring for DuplicateKeyError"""
+	def __init__(self, *args, **kwargs):
+		super(DuplicateKeyError, self).__init__(*args, **kwargs)
+		
+		
 class IOError(ParserError):
 	"""Exception raised on I/O errors in this module."""
 
@@ -57,7 +63,7 @@ class Parser(object):
 	Grouped labels are stored as nested dictionaries, nesting may be arbitrarily deep.
 	Internally, these groups are called *containers* and must be in {OBJECT, GROUP}.
 	
-	This module makes heavy use of assertions to find bugs and detect poorly formatted files.
+	This module makes use of assertions to find bugs and detect poorly formatted files.
 	As usual, when an assertion fails an AssertionError is raised. This type of behavior may not be desired 
 	or expected, since it will halt execution, especially when addressing multiple files in a production environment.
 	Assertions are not checked in -O mode, use that to temporarily override this behavior.
@@ -176,8 +182,8 @@ class ParserTests(unittest.TestCase):
 			for name in files:
 				filename = os.path.join(root, name)
 				try:
-					pdsparser.parse(open_pds(filename))
-					labels = pdsparser.labels
+					labels = pdsparser.parse(open_pds(filename))
+					# labels = pdsparser.labels # Old usage, depriciated.
 				except Exception, e:
 					# Re-raise the exception, causing this test to fail.
 					raise
@@ -187,12 +193,12 @@ class ParserTests(unittest.TestCase):
 
 
 if __name__ == '__main__':
-	unittest.main()
+	#unittest.main()
 		
 	from common import open_pds
 	filename = '../../../test_data/FHA01118.LBL'
 	pdsparser = Parser()
-	pdsparser.parse(open_pds(filename))
-	labels = pdsparser.labels
+	labels = pdsparser.parse(open_pds(filename))
+	# labels = pdsparser.labels # Old usage, depriciated.
 	print labels.keys()
 	print labels['IMAGE END']
