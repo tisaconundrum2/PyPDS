@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The parser module &mdash; PyPDS v0.1 documentation</title>
+    <link rel="stylesheet" href="_static/adctheme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyPDS v0.1 documentation" href="index.html" />
+    <link rel="next" title="The extractorbase module" href="extractorbase.html" />
+    <link rel="prev" title="The reader module" href="reader.html" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<p>PyPDS v0.1 documentation</p>
+</div>
+<div id="header">
+	<div id="title"><h1>The parser module</h1></div>
+	<ul id="headerButtons">
+		<li id="toc_button"><div class="headerButton"><a href="#">Table of Contents</a></div></li>
+		<li id="page_buttons">
+			<div class="headerButton"><a href="genindex.html" title="General Index" accesskey="I">index</a></div>
+			<div class="headerButton"><a href="modindex.html" title="Global Module Index" accesskey="M">modules</a></div>
+			<div class="headerButton"><a href="extractorbase.html" title="The extractorbase module" accesskey="N">next</a></div>
+			<div class="headerButton"><a href="reader.html" title="The reader module" accesskey="P">previous</a></div>
+		</li>
+	</ul>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="index.html">Main Page</a></li></ul>
+	<ul class="current">
+<li class="toctree-l1"><a class="reference external" href="common.html">The common module</a></li>
+<li class="toctree-l1"><a class="reference external" href="reader.html">The reader module</a></li>
+<li class="toctree-l1 current"><a class="current reference external" href="">The parser module</a></li>
+<li class="toctree-l1"><a class="reference external" href="extractorbase.html">The extractorbase module</a></li>
+<li class="toctree-l1"><a class="reference external" href="imageextractor.html">The imageextractor module</a></li>
+</ul>
+
+      <h3>This Page</h3>
+      <ul class="this-page-menu">
+        <li><a href="_sources/parser.txt"
+               rel="nofollow">Show Source</a></li>
+      </ul>
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms or a module, class or function name.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pds.core.parser">
+<h1>The parser module<a class="headerlink" href="#module-pds.core.parser" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<p>parser.py</p>
+<p>Created by Ryan Matthew Balfanz on 2009-05-27.</p>
+<p>Copyright (c) 2009 Ryan Matthew Balfanz. All rights reserved.</p>
+<dl class="exception">
+<dt id="pds.core.parser.IOError">
+<em class="property">exception </em><tt class="descclassname">pds.core.parser.</tt><tt class="descname">IOError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pds.core.parser.IOError" title="Permalink to this definition">¶</a></dt>
+<dd>Exception raised on I/O errors in this module.</dd></dl>
+
+<dl class="class">
+<dt id="pds.core.parser.Parser">
+<em class="property">class </em><tt class="descclassname">pds.core.parser.</tt><tt class="descname">Parser</tt><big>(</big><em>log=None</em><big>)</big><a class="headerlink" href="#pds.core.parser.Parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse PDS files into a dictionary.</p>
+<p>Instances of this module are reusable.</p>
+<p>Parsing a PDS data product results in a dictionary whose keys correspond to unchanged PDS labels &#8211;
+i.e. label[&#8216;RECORD_TYPE&#8217;] is not the same as label[&#8216;record_type&#8217;].
+Grouped labels are stored as nested dictionaries, nesting may be arbitrarily deep.
+Internally, these groups are called <em>containers</em> and must be in {OBJECT, GROUP}.</p>
+<p>This module makes heavy use of assertions to find bugs and detect poorly formatted files.
+As usual, when an assertion fails an AssertionError is raised. This type of behavior may not be desired 
+or expected, since it will halt execution, especially when addressing multiple files in a production environment.
+Assertions are not checked in -O mode, use that to temporarily override this behavior.</p>
+<p>Future versions may do away with assertions altogether and utilize the logging facility.
+Logging is not very mature at this stage, but usable.
+Although this feature is not supported at this time, a future version may perform automatic type conversion
+as per the PDS specification.</p>
+<p>Simple Usage Example</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">parser</span> <span class="kn">import</span> <span class="n">Parser</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pdsParser</span> <span class="o">=</span> <span class="n">Parser</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;file1.lbl&#39;</span><span class="p">,</span> <span class="s">&#39;file2.lbl&#39;</span><span class="p">]:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">labelDict</span> <span class="o">=</span> <span class="n">pdsParser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pds.core.parser.Parser.parse">
+<tt class="descname">parse</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pds.core.parser.Parser.parse" title="Permalink to this definition">¶</a></dt>
+<dd>Parse the source PDS data.</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="pds.core.parser.ParserError">
+<em class="property">exception </em><tt class="descclassname">pds.core.parser.</tt><tt class="descname">ParserError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pds.core.parser.ParserError" title="Permalink to this definition">¶</a></dt>
+<dd>Base class for exceptions in this module.</dd></dl>
+
+<dl class="class">
+<dt id="pds.core.parser.ParserNode">
+<em class="property">class </em><tt class="descclassname">pds.core.parser.</tt><tt class="descname">ParserNode</tt><big>(</big><em>children=None</em>, <em>parent=None</em><big>)</big><a class="headerlink" href="#pds.core.parser.ParserNode" title="Permalink to this definition">¶</a></dt>
+<dd>A tree-like node structure to maintain structure within PDS labels.</dd></dl>
+
+<dl class="class">
+<dt id="pds.core.parser.ParserTests">
+<em class="property">class </em><tt class="descclassname">pds.core.parser.</tt><tt class="descname">ParserTests</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="headerlink" href="#pds.core.parser.ParserTests" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unit tests for class Parser</p>
+<dl class="method">
+<dt id="pds.core.parser.ParserTests.test_no_exceptions">
+<tt class="descname">test_no_exceptions</tt><big>(</big><big>)</big><a class="headerlink" href="#pds.core.parser.ParserTests.test_no_exceptions" title="Permalink to this definition">¶</a></dt>
+<dd>Check that all test files are parsed without any Exception</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+    <div class="footer">
+    <p>
+      &copy; Copyright 2009, Ryan Balfanz.
+      Last updated on Dec 20, 2009.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.3.
+	</p>
+    </div>
+      <div class="clearer"></div>
+    </div>
+	<div id="breadcrumbs">
+		The parser module
+		</ul>
+	</div>
+	<script type="text/javascript" charset="utf-8" src="_static/toc.js"></script>
+  </body>
+</html>

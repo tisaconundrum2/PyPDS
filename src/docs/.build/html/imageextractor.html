@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The imageextractor module &mdash; PyPDS v0.1 documentation</title>
+    <link rel="stylesheet" href="_static/adctheme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyPDS v0.1 documentation" href="index.html" />
+    <link rel="prev" title="The extractorbase module" href="extractorbase.html" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<p>PyPDS v0.1 documentation</p>
+</div>
+<div id="header">
+	<div id="title"><h1>The imageextractor module</h1></div>
+	<ul id="headerButtons">
+		<li id="toc_button"><div class="headerButton"><a href="#">Table of Contents</a></div></li>
+		<li id="page_buttons">
+			<div class="headerButton"><a href="genindex.html" title="General Index" accesskey="I">index</a></div>
+			<div class="headerButton"><a href="modindex.html" title="Global Module Index" accesskey="M">modules</a></div>
+			<div class="headerButton"><a href="extractorbase.html" title="The extractorbase module" accesskey="P">previous</a></div>
+		</li>
+	</ul>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="index.html">Main Page</a></li></ul>
+	<ul class="current">
+<li class="toctree-l1"><a class="reference external" href="common.html">The common module</a></li>
+<li class="toctree-l1"><a class="reference external" href="reader.html">The reader module</a></li>
+<li class="toctree-l1"><a class="reference external" href="parser.html">The parser module</a></li>
+<li class="toctree-l1"><a class="reference external" href="extractorbase.html">The extractorbase module</a></li>
+<li class="toctree-l1 current"><a class="current reference external" href="">The imageextractor module</a></li>
+</ul>
+
+      <h3>This Page</h3>
+      <ul class="this-page-menu">
+        <li><a href="_sources/imageextractor.txt"
+               rel="nofollow">Show Source</a></li>
+      </ul>
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms or a module, class or function name.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pds.imageextractor">
+<h1>The imageextractor module<a class="headerlink" href="#module-pds.imageextractor" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<p>imageextractor.py</p>
+<p>Created by Ryan Matthew Balfanz on 2009-05-28.</p>
+<p>Copyright (c) 2009 Ryan Matthew Balfanz. All rights reserved.</p>
+<dl class="exception">
+<dt id="pds.imageextractor.ChecksumError">
+<em class="property">exception </em><tt class="descclassname">pds.imageextractor.</tt><tt class="descname">ChecksumError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pds.imageextractor.ChecksumError" title="Permalink to this definition">¶</a></dt>
+<dd>Error raised when verification of a secure hash fails.</dd></dl>
+
+<dl class="class">
+<dt id="pds.imageextractor.ImageExtractor">
+<em class="property">class </em><tt class="descclassname">pds.imageextractor.</tt><tt class="descname">ImageExtractor</tt><big>(</big><em>log=None</em><big>)</big><a class="headerlink" href="#pds.imageextractor.ImageExtractor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract an image embedded within a PDS file.</p>
+<p>Returned images are instances of the Python Imaging Library Image class.
+As such, this module depends on PIL.</p>
+<p>An attached image may be extracted from by 
+determining its location within the file and identifying its size.
+Not all PDS images are supported at this time.</p>
+<p>Currently this module only supports FIXED_LENGTH as the RECORD_TYPE,
+8 as the SAMPLE_BITS and either UNSIGNED_INTEGER or MSB_UNSIGNED_INTEGER as the SAMPLE_TYPE.
+Attempts to extract an image that is not supported will result in None being returned.</p>
+<p>Simple Example Usage</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">Image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imageextractor</span> <span class="kn">import</span> <span class="n">ImageExtractor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ie</span> <span class="o">=</span> <span class="n">ImageExtractor</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">ie</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s">&#39;pdsFileWithAnImage.lbl&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">if</span> <span class="n">img</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&#39;extractedImage.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">else</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">print</span> <span class="s">&quot;The image was not supported.&quot;</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pds.imageextractor.ImageExtractor.extract">
+<tt class="descname">extract</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pds.imageextractor.ImageExtractor.extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract an image from <em>source</em>.</p>
+<p>If the image is supported an instance of PIL&#8217;s Image is returned, otherwise None.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="pds.imageextractor.ImageExtractorError">
+<em class="property">exception </em><tt class="descclassname">pds.imageextractor.</tt><tt class="descname">ImageExtractorError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pds.imageextractor.ImageExtractorError" title="Permalink to this definition">¶</a></dt>
+<dd>Base class for exceptions in this module.</dd></dl>
+
+<dl class="class">
+<dt id="pds.imageextractor.ImageExtractorTests">
+<em class="property">class </em><tt class="descclassname">pds.imageextractor.</tt><tt class="descname">ImageExtractorTests</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="headerlink" href="#pds.imageextractor.ImageExtractorTests" title="Permalink to this definition">¶</a></dt>
+<dd>Unit tests for class ImageExtractor</dd></dl>
+
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+    <div class="footer">
+    <p>
+      &copy; Copyright 2009, Ryan Balfanz.
+      Last updated on Dec 20, 2009.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.3.
+	</p>
+    </div>
+      <div class="clearer"></div>
+    </div>
+	<div id="breadcrumbs">
+		The imageextractor module
+		</ul>
+	</div>
+	<script type="text/javascript" charset="utf-8" src="_static/toc.js"></script>
+  </body>
+</html>

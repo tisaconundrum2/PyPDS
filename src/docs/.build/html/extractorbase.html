@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The extractorbase module &mdash; PyPDS v0.1 documentation</title>
+    <link rel="stylesheet" href="_static/adctheme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyPDS v0.1 documentation" href="index.html" />
+    <link rel="next" title="The imageextractor module" href="imageextractor.html" />
+    <link rel="prev" title="The parser module" href="parser.html" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<p>PyPDS v0.1 documentation</p>
+</div>
+<div id="header">
+	<div id="title"><h1>The extractorbase module</h1></div>
+	<ul id="headerButtons">
+		<li id="toc_button"><div class="headerButton"><a href="#">Table of Contents</a></div></li>
+		<li id="page_buttons">
+			<div class="headerButton"><a href="genindex.html" title="General Index" accesskey="I">index</a></div>
+			<div class="headerButton"><a href="modindex.html" title="Global Module Index" accesskey="M">modules</a></div>
+			<div class="headerButton"><a href="imageextractor.html" title="The imageextractor module" accesskey="N">next</a></div>
+			<div class="headerButton"><a href="parser.html" title="The parser module" accesskey="P">previous</a></div>
+		</li>
+	</ul>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="index.html">Main Page</a></li></ul>
+	<ul class="current">
+<li class="toctree-l1"><a class="reference external" href="common.html">The common module</a></li>
+<li class="toctree-l1"><a class="reference external" href="reader.html">The reader module</a></li>
+<li class="toctree-l1"><a class="reference external" href="parser.html">The parser module</a></li>
+<li class="toctree-l1 current"><a class="current reference external" href="">The extractorbase module</a></li>
+<li class="toctree-l1"><a class="reference external" href="imageextractor.html">The imageextractor module</a></li>
+</ul>
+
+      <h3>This Page</h3>
+      <ul class="this-page-menu">
+        <li><a href="_sources/extractorbase.txt"
+               rel="nofollow">Show Source</a></li>
+      </ul>
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms or a module, class or function name.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pds.core.extractorbase">
+<h1>The extractorbase module<a class="headerlink" href="#module-pds.core.extractorbase" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<p>extractorbase.py</p>
+<p>Created by Ryan Matthew Balfanz on 2009-05-28.</p>
+<p>Copyright (c) 2009 Ryan Matthew Balfanz. All rights reserved.</p>
+<dl class="class">
+<dt id="pds.core.extractorbase.ExtractorBase">
+<em class="property">class </em><tt class="descclassname">pds.core.extractorbase.</tt><tt class="descname">ExtractorBase</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pds.core.extractorbase.ExtractorBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>The base class from with various extractors shall derive.</p>
+<p>Programs may define their own extractors by creating a new extractor</p>
+<p>Subclasses shall override the extract method, otherwise a NotImplementedError is raised.</p>
+<dl class="method">
+<dt id="pds.core.extractorbase.ExtractorBase.extract">
+<tt class="descname">extract</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pds.core.extractorbase.ExtractorBase.extract" title="Permalink to this definition">¶</a></dt>
+<dd>This method should be overwritten by a subclass.</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="pds.core.extractorbase.ExtractorError">
+<em class="property">exception </em><tt class="descclassname">pds.core.extractorbase.</tt><tt class="descname">ExtractorError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pds.core.extractorbase.ExtractorError" title="Permalink to this definition">¶</a></dt>
+<dd>Base class for exceptions in this module.</dd></dl>
+
+<dl class="class">
+<dt id="pds.core.extractorbase.ExtractorTests">
+<em class="property">class </em><tt class="descclassname">pds.core.extractorbase.</tt><tt class="descname">ExtractorTests</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="headerlink" href="#pds.core.extractorbase.ExtractorTests" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unit tests for class ExtractorBase</p>
+<dl class="method">
+<dt id="pds.core.extractorbase.ExtractorTests.test_not_implemented">
+<tt class="descname">test_not_implemented</tt><big>(</big><big>)</big><a class="headerlink" href="#pds.core.extractorbase.ExtractorTests.test_not_implemented" title="Permalink to this definition">¶</a></dt>
+<dd>Method extract() must be overloaded</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+    <div class="footer">
+    <p>
+      &copy; Copyright 2009, Ryan Balfanz.
+      Last updated on Dec 20, 2009.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.3.
+	</p>
+    </div>
+      <div class="clearer"></div>
+    </div>
+	<div id="breadcrumbs">
+		The extractorbase module
+		</ul>
+	</div>
+	<script type="text/javascript" charset="utf-8" src="_static/toc.js"></script>
+  </body>
+</html>
